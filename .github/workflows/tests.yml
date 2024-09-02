@@ -33,8 +33,10 @@ jobs:
         run: hatch fmt --check
 
       - name: Run linters
-        run: |
-          hatch env run -e style check
+        run: hatch env run -e style check
+
+      - name: Type checks
+        run: hatch env run -e types check
 
   tests:
     name: Run tests on ${{ matrix.python-version }}
