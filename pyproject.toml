@@ -29,6 +29,7 @@ classifiers = [
 ]
 dependencies = [
   "django>=4.2",
+  "typing-extensions; python_version<'3.11'"
 ]
 
 [project.urls]
@@ -68,6 +69,7 @@ source = "vcs"
 [tool.hatch.envs.default]
 dependencies = [
   "coverage[toml]>=6.5",
+  "faker",
   "pytest",
   "pytest-asyncio",
   "pytest-django",
