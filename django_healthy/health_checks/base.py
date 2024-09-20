@@ -66,5 +66,7 @@ class HealthCheckResult:
 
 
 class HealthCheck(ABC):
+    __slots__: tuple[()] = ()
+
     @abstractmethod
     async def check_health(self) -> HealthCheckResult: ...
