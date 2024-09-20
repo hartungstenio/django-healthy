@@ -127,7 +127,7 @@ check = "mypy --install-types --non-interactive {args:django_healthy tests}"
 
 [tool.hatch.envs.hatch-static-analysis]
 config-path = "ruff_defaults.toml"
-dependencies = ["ruff==0.6.2"]
+dependencies = ["ruff==0.6.5"]
 
 [[tool.mypy.overrides]]
 module = "django.*"
