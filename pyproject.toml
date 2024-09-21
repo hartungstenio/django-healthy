@@ -30,7 +30,7 @@ classifiers = [
 dependencies = [
   "asgiref>=3.3",
   "django>=4.2",
-  "typing-extensions; python_version<'3.11'"
+  "typing-extensions; python_version<'3.10'"
 ]
 
 [project.urls]

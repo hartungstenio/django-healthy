@@ -27,7 +27,7 @@ class DatabasePingHealthCheck(HealthCheck):
         else:
             return HealthCheckResult.healthy()
 
-    def _perform_health_check(self):
+    def _perform_health_check(self) -> None:
         connection: DjangoDatabaseWrapper = cast(DjangoDatabaseWrapper, connections[self.alias])
 
         with connection.cursor() as cursor:
