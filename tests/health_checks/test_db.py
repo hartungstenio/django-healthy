@@ -4,9 +4,40 @@ import pytest
 from django.db import DatabaseError
 
 from django_healthy.health_checks import HealthStatus
-from django_healthy.health_checks.db import DatabaseModelHealthCheck
+from django_healthy.health_checks.db import DatabaseModelHealthCheck, DatabasePingHealthCheck
 
 pytestmark = pytest.mark.django_db
+
+
+@pytest.mark.asyncio
+class TestDatabasePingHealthCheck:
+    async def test_check_health_with_working_database(self):
+        health_check = DatabasePingHealthCheck()
+
+        got = await health_check.check_health()
+
+        assert got.status == HealthStatus.HEALTHY
+
+    async def test_check_health_with_working_database_custom_query(self):
+        health_check = DatabasePingHealthCheck(query="SELECT 1")
+
+        got = await health_check.check_health()
+
+        assert got.status == HealthStatus.HEALTHY
+
+    async def test_check_health_with_working_database_invalid_query(self):
+        health_check = DatabasePingHealthCheck(query="INVALID QUERY")
+
+        got = await health_check.check_health()
+
+        assert got.status == HealthStatus.UNHEALTHY
+
+    async def test_check_health_with_broken_database(self):
+        health_check = DatabasePingHealthCheck(alias="dummy")
+
+        got = await health_check.check_health()
+
+        assert got.status == HealthStatus.UNHEALTHY
 
 
 @pytest.mark.asyncio
