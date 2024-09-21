@@ -130,6 +130,10 @@ config-path = "ruff_defaults.toml"
 dependencies = ["ruff==0.6.5"]
 
 [[tool.mypy.overrides]]
+module = "django_healthy.migrations.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
 module = "django.*"
 ignore_missing_imports = true
 
