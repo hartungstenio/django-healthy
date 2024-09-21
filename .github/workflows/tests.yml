@@ -58,4 +58,4 @@ jobs:
 
       - name: Run tests
         run: |
-          hatch env run -e tests -i py=${{ matrix.python-version }} test
+          hatch env run -e tests -i py=${{ matrix.python-version }} cov

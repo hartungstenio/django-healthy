@@ -28,6 +28,7 @@ classifiers = [
   "Framework :: Django :: 5.1",
 ]
 dependencies = [
+  "asgiref>=3.3",
   "django>=4.2",
   "typing-extensions; python_version<'3.11'"
 ]
@@ -128,6 +129,10 @@ check = "mypy --install-types --non-interactive {args:django_healthy tests}"
 [tool.hatch.envs.hatch-static-analysis]
 config-path = "ruff_defaults.toml"
 dependencies = ["ruff==0.6.5"]
+
+[[tool.mypy.overrides]]
+module = "django_healthy.migrations.*"
+ignore_errors = true
 
 [[tool.mypy.overrides]]
 module = "django.*"
