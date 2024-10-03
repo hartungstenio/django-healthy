@@ -39,3 +39,20 @@ class TestLivenessView:
         response: HttpResponse = await django_client_method(reverse("django_healthy:ping"))
 
         assert response.status_code == HTTPStatus.METHOD_NOT_ALLOWED
+
+
+class TestHealthView:
+    @pytest.mark.asyncio
+    async def test_get_async(self, async_client: AsyncClient):
+        response: HttpResponse = await async_client.get(reverse("django_healthy:health"))
+
+        assert response.status_code == HTTPStatus.OK
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("method", ["post", "put", "patch", "delete"])
+    async def test_methods_not_allowed_async(self, method: str, async_client: AsyncClient):
+        django_client_method = getattr(async_client, method)
+
+        response: HttpResponse = await django_client_method(reverse("django_healthy:health"))
+
+        assert response.status_code == HTTPStatus.METHOD_NOT_ALLOWED
