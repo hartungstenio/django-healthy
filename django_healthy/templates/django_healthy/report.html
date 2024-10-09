@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Health Report</title>
+    </head>
+    <body>
+        <table>
+            <thead>
+                <th>System</th>
+                <th>Status</th>
+                <th>Time</th>
+            </thead>
+            <tbody>
+                {% for system, reported in report.entries.items %}
+                <tr>
+                    <td>{{ system }}</td>
+                    <td>{{ reported.status.name }}</td>
+                    <td>{{ reported.duration.total_seconds }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
