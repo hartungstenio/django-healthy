@@ -1,13 +1,22 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING, ClassVar
+
 from django.core.cache import caches
 from django.utils.crypto import get_random_string
+from django.utils.translation import gettext_lazy as _
 
 from .base import HealthCheck, HealthCheckResult
+
+if TYPE_CHECKING:
+    from .types import MessageDict
 
 
 class CacheHealthCheck(HealthCheck):
     __slots__: tuple[str, ...] = ("alias", "key_prefix")
+    messages: ClassVar[MessageDict] = {
+        "unexpected": _("Got unexpected value"),
+    }
 
     def __init__(self, alias: str = "default", key_prefix: str = "django_healthy"):
         self.alias = alias
@@ -26,7 +35,7 @@ class CacheHealthCheck(HealthCheck):
         else:
             if got != given:
                 return HealthCheckResult.degraded(
-                    description="Got unexpected value",
+                    description=self.messages["unexpected"].format(given=given, got=got),
                     data={"given": given, "got": got},
                 )
             return HealthCheckResult.healthy()
