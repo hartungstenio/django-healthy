@@ -1,15 +1,19 @@
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, ClassVar, cast
 
 from asgiref.sync import sync_to_async
 from django.db import DatabaseError, connections
 from django.db.backends.base.base import BaseDatabaseWrapper as DjangoDatabaseWrapper
 from django.utils.crypto import get_random_string
+from django.utils.translation import gettext_lazy as _
 
 from django_healthy.models import Test
 
 from .base import HealthCheck, HealthCheckResult
+
+if TYPE_CHECKING:
+    from .types import MessageDict
 
 
 class DatabasePingHealthCheck(HealthCheck):
@@ -36,6 +40,11 @@ class DatabasePingHealthCheck(HealthCheck):
 
 class DatabaseModelHealthCheck(HealthCheck):
     __slots__: tuple[str, ...] = ("alias",)
+    messages: ClassVar[MessageDict] = {
+        "insert": _("Could not insert"),
+        "update": _("Could not update"),
+        "delete": _("Could not delete"),
+    }
 
     def __init__(self, alias: str | None = None):
         self.alias = alias
@@ -45,17 +54,17 @@ class DatabaseModelHealthCheck(HealthCheck):
         try:
             await instance.asave(using=self.alias)
         except DatabaseError as exc:
-            return HealthCheckResult.unhealthy(description="Could not insert", exception=exc)
+            return HealthCheckResult.unhealthy(description=self.messages["insert"], exception=exc)
 
         try:
             instance.summary = get_random_string(100)
             await instance.asave(using=self.alias)
         except DatabaseError as exc:
-            return HealthCheckResult.unhealthy(description="Could not update", exception=exc)
+            return HealthCheckResult.unhealthy(description=self.messages["update"], exception=exc)
 
         try:
             await instance.adelete(using=self.alias)
         except DatabaseError as exc:
-            return HealthCheckResult.unhealthy(description="Could not delete", exception=exc)
+            return HealthCheckResult.unhealthy(description=self.messages["delete"], exception=exc)
 
         return HealthCheckResult.healthy()
