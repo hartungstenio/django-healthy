@@ -544,8 +544,5 @@ select = [
 ban-relative-imports = "all"
 
 [lint.isort]
-known-first-party = ["django_healthy"]
-
-[lint.flake8-pytest-style]
-fixture-parentheses = false
-mark-parentheses = false
+known-local-folder = ["django_healthy"]
+split-on-trailing-comma = false

@@ -21,7 +21,7 @@ class TestHealthCheckService:
     async def test_with_custom_handler(self):
         service = HealthCheckService(
             HealthCheckHandler(
-                backends={
+                {
                     "test": {
                         "BACKEND": "django_healthy.health_checks.cache.CacheHealthCheck",
                     }
@@ -37,7 +37,7 @@ class TestHealthCheckService:
     async def test_with_unhealthy_service(self):
         service = HealthCheckService(
             HealthCheckHandler(
-                backends={
+                {
                     "test": {
                         "BACKEND": "django_healthy.health_checks.db.DatabasePingHealthCheck",
                         "OPTIONS": {
@@ -56,7 +56,7 @@ class TestHealthCheckService:
     async def test_with_multiple_service_status_gets_worst_case(self):
         service = HealthCheckService(
             HealthCheckHandler(
-                backends={
+                {
                     "healthy": {
                         "BACKEND": "django_healthy.health_checks.db.DatabasePingHealthCheck",
                         "OPTIONS": {

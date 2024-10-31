@@ -6,10 +6,9 @@ from datetime import timedelta
 from timeit import default_timer as timer
 from typing import Any
 
-from django_healthy._compat import Mapping  # noqa: TCH001
-
 from .base import HealthCheck, HealthStatus
 from .handler import HealthCheckHandler, health_checks
+from django_healthy._compat import Mapping  # noqa: TCH001
 
 
 @dataclass
@@ -37,8 +36,7 @@ class HealthCheckService:
     async def check_health(self) -> HealthReport:
         start_time: float = timer()
         task_map: dict[str, asyncio.Task[HealthReportEntry]] = {
-            name: asyncio.create_task(self.run_health_check(health_check))
-            for name, health_check in self._handler.items()
+            name: asyncio.create_task(self.run_health_check(self._handler[name])) for name in self._handler
         }
         await asyncio.gather(*task_map.values())
         end_time: float = timer()

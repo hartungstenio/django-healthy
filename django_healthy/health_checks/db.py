@@ -8,9 +8,8 @@ from django.db.backends.base.base import BaseDatabaseWrapper as DjangoDatabaseWr
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
-from django_healthy.models import Test
-
 from .base import HealthCheck, HealthCheckResult
+from django_healthy.models import Test
 
 if TYPE_CHECKING:
     from .types import MessageDict
