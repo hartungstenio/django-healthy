@@ -44,7 +44,7 @@ branch = true
 parallel = true
 
 [tool.coverage.paths]
-healthy = ["django_healthy", "*/django-healthy/django_healthy"]
+healthy = ["src/django_healthy", "*/django-healthy/src/django_healthy"]
 tests = ["tests", "*/django-healthy/tests"]
 
 [tool.coverage.report]
@@ -54,13 +54,16 @@ exclude_lines = [
   "if TYPE_CHECKING:",
 ]
 
+[tool.deptry]
+known_first_party = ["django_healthy"]
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "testproj.settings"
 pythonpath = [".", "src"]
 asyncio_default_fixture_loop_scope = "function"
 
 [tool.hatch.build.targets.wheel]
-packages = ["django_healthy"]
+sources = ["src"]
 
 [tool.hatch.build.targets.sdist]
 exclude = ["/.devcontainer", "/.github"]
@@ -125,7 +128,7 @@ dependencies = [
   "mypy>=1.0.0",
 ]
 [tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:django_healthy tests}"
+check = "mypy --install-types --non-interactive {args:src/django_healthy tests}"
 
 [tool.hatch.envs.hatch-static-analysis]
 config-path = "ruff_defaults.toml"
