@@ -102,19 +102,6 @@ test-cov = "coverage run -m pytest {args:tests}"
 [[tool.hatch.envs.all.matrix]]
 python = ["3.10", "3.11", "3.12", "3.13", "3.8", "3.9"]
 
-[tool.hatch.envs.style]
-dependencies = ["deptry", "pre-commit"]
-detached = true
-
-[tool.hatch.envs.style.scripts]
-check = [
-  "deps",
-  "lint",
-]
-deps = "deptry ."
-lint = "pre-commit run -a -v"
-update = "pre-commit autoupdate"
-
 [tool.hatch.envs.tests.overrides]
 matrix.django.dependencies = [
   { value = "django>=4.2,<5.0", if = ["4.2"] },
@@ -134,20 +121,38 @@ python = ["3.10", "3.11", "3.12"]
 django = ["5.1"]
 python = ["3.10", "3.11", "3.12", "3.13"]
 
-[tool.hatch.envs.types]
-dependencies = [
-  "mypy>=1.0.0",
-]
-[tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:src/django_healthy tests}"
-
 [tool.hatch.envs.hatch-static-analysis]
 config-path = "ruff_defaults.toml"
-dependencies = ["ruff==0.9.3"]
+dependencies = [
+  "deptry",
+  "mypy",
+  "pre-commit",
+  "ruff==0.9.3",
+]
+
+[tool.hatch.envs.hatch-static-analysis.scripts]
+format-check="ruff format{env:HATCH_FMT_ARGS:} --check --diff {args:.}"
+format-fix="ruff format{env:HATCH_FMT_ARGS:} {args:.}"
+lint-check=[
+  "SKIP=no-commit-to-branch,ruff,ruff-format pre-commit run --all-files --verbose",
+  "ruff check{env:HATCH_FMT_ARGS:} {args:.}",
+  "deptry .",
+  "mypy --install-types --non-interactive {args:src/django_healthy tests}",
+]
+lint-fix=[
+  "SKIP=no-commit-to-branch,ruff,ruff-format pre-commit run --all-files --verbose",
+  "ruff check{env:HATCH_FMT_ARGS:} --fix {args:.}",
+  "deptry .",
+  "mypy --install-types --non-interactive {args:src/django_healthy tests}",
+]
 
 [[tool.mypy.overrides]]
 module = "django_healthy.migrations.*"
 ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "asgiref.*"
+ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = "django.*"
