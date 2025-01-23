@@ -89,11 +89,11 @@ dependencies = [
 
 [tool.hatch.envs.default.scripts]
 cov = [
-  "cov-report",
   "test-cov",
+  "cov-report",
 ]
 cov-report = [
-  "- coverage combine",
+  "coverage combine",
   "coverage report",
 ]
 test = "pytest {args:tests}"
@@ -131,18 +131,18 @@ dependencies = [
 ]
 
 [tool.hatch.envs.hatch-static-analysis.scripts]
-format-check="ruff format{env:HATCH_FMT_ARGS:} --check --diff {args:.}"
-format-fix="ruff format{env:HATCH_FMT_ARGS:} {args:.}"
-lint-check=[
-  "SKIP=no-commit-to-branch,ruff,ruff-format pre-commit run --all-files --verbose",
+format-check = "ruff format{env:HATCH_FMT_ARGS:} --check --diff {args:.}"
+format-fix = "ruff format{env:HATCH_FMT_ARGS:} {args:.}"
+lint-check = [
   "ruff check{env:HATCH_FMT_ARGS:} {args:.}",
   "deptry .",
+  "SKIP=no-commit-to-branch,ruff,ruff-format pre-commit run --all-files --verbose",
   "mypy --install-types --non-interactive {args:src/django_healthy tests}",
 ]
-lint-fix=[
-  "SKIP=no-commit-to-branch,ruff,ruff-format pre-commit run --all-files --verbose",
+lint-fix = [
   "ruff check{env:HATCH_FMT_ARGS:} --fix {args:.}",
   "deptry .",
+  "SKIP=no-commit-to-branch,ruff,ruff-format pre-commit run --all-files --verbose",
   "mypy --install-types --non-interactive {args:src/django_healthy tests}",
 ]
 
