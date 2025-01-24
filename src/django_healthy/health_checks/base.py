@@ -2,17 +2,19 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from enum import Enum, auto
+from enum import auto
 from typing import TYPE_CHECKING, Any
+
+from django_healthy._compat import StrEnum
 
 if TYPE_CHECKING:
     from django_healthy._compat import Self
 
 
-class HealthStatus(Enum):
-    UNHEALTHY = auto()
-    DEGRADED = auto()
-    HEALTHY = auto()
+class HealthStatus(StrEnum):
+    FAIL = auto()
+    WARN = auto()
+    PASS = auto()
 
 
 @dataclass
@@ -30,7 +32,7 @@ class HealthCheckResult:
         data: dict[str, Any] | None = None,
     ) -> Self:
         return cls(
-            status=HealthStatus.HEALTHY,
+            status=HealthStatus.PASS,
             description=description,
             exception=exception,
             data=data or {},
@@ -44,7 +46,7 @@ class HealthCheckResult:
         data: dict[str, Any] | None = None,
     ) -> Self:
         return cls(
-            status=HealthStatus.DEGRADED,
+            status=HealthStatus.WARN,
             description=description,
             exception=exception,
             data=data or {},
@@ -58,7 +60,7 @@ class HealthCheckResult:
         data: dict[str, Any] | None = None,
     ) -> Self:
         return cls(
-            status=HealthStatus.UNHEALTHY,
+            status=HealthStatus.FAIL,
             description=description,
             exception=exception,
             data=data or {},

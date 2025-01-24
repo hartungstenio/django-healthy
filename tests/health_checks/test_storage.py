@@ -14,7 +14,7 @@ class TestStorageHealthCheck:
 
         got = await health_check.check_health()
 
-        assert got.status == HealthStatus.HEALTHY
+        assert got.status == HealthStatus.PASS
 
     async def test_without_saving(self):
         health_check = StorageHealthCheck()
@@ -23,7 +23,7 @@ class TestStorageHealthCheck:
         with mock.patch.object(storage, "save"):
             got = await health_check.check_health()
 
-        assert got.status == HealthStatus.DEGRADED
+        assert got.status == HealthStatus.WARN
         assert "filename" in got.data
 
     async def test_without_deleting(self):
@@ -33,7 +33,7 @@ class TestStorageHealthCheck:
         with mock.patch.object(storage, "delete"):
             got = await health_check.check_health()
 
-        assert got.status == HealthStatus.DEGRADED
+        assert got.status == HealthStatus.WARN
         assert "filename" in got.data
 
     async def test_with_save_error(self):
@@ -43,7 +43,7 @@ class TestStorageHealthCheck:
         with mock.patch.object(storage, "save", side_effect=Exception):
             got = await health_check.check_health()
 
-        assert got.status == HealthStatus.UNHEALTHY
+        assert got.status == HealthStatus.FAIL
 
     async def test_with_delete_error(self):
         health_check = StorageHealthCheck()
@@ -52,7 +52,7 @@ class TestStorageHealthCheck:
         with mock.patch.object(storage, "delete", side_effect=Exception):
             got = await health_check.check_health()
 
-        assert got.status == HealthStatus.UNHEALTHY
+        assert got.status == HealthStatus.FAIL
 
     async def test_with_exists_error(self):
         health_check = StorageHealthCheck()
@@ -61,4 +61,4 @@ class TestStorageHealthCheck:
         with mock.patch.object(storage, "exists", side_effect=Exception):
             got = await health_check.check_health()
 
-        assert got.status == HealthStatus.UNHEALTHY
+        assert got.status == HealthStatus.FAIL

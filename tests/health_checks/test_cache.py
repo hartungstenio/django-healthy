@@ -14,14 +14,14 @@ class TestacheHealthCheck:
 
         got = await health_check.check_health()
 
-        assert got.status == HealthStatus.HEALTHY
+        assert got.status == HealthStatus.PASS
 
     async def test_check_health_with_invalid_value(self):
         health_check = CacheHealthCheck(alias="dummy")
 
         got = await health_check.check_health()
 
-        assert got.status == HealthStatus.DEGRADED
+        assert got.status == HealthStatus.WARN
         assert "given" in got.data
         assert "got" in got.data
 
@@ -32,5 +32,5 @@ class TestacheHealthCheck:
         with mock.patch.object(cache, "aset", side_effect=RuntimeError):
             got = await health_check.check_health()
 
-        assert got.status == HealthStatus.UNHEALTHY
+        assert got.status == HealthStatus.FAIL
         assert isinstance(got.exception, RuntimeError)
