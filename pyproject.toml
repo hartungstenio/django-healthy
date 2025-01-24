@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
+requires = ["hatch-vcs", "hatchling"]
 
 [project]
 name = "django-healthy"
@@ -37,7 +37,7 @@ classifiers = [
 dependencies = [
   "asgiref>=3.3",
   "django>=4.2",
-  "typing-extensions; python_version<'3.10'"
+  "typing-extensions; python_version<'3.10'",
 ]
 
 [project.urls]
@@ -46,19 +46,19 @@ Issues = "https://github.com/hartungstenio/django-healthy/issues"
 Source = "https://github.com/hartungstenio/django-healthy"
 
 [tool.coverage.run]
-source_pkgs = ["django_healthy", "tests"]
 branch = true
 parallel = true
+source_pkgs = ["django_healthy", "tests"]
 
 [tool.coverage.paths]
-healthy = ["src/django_healthy", "*/django-healthy/src/django_healthy"]
-tests = ["tests", "*/django-healthy/tests"]
+healthy = ["*/django-healthy/src/django_healthy", "src/django_healthy"]
+tests = ["*/django-healthy/tests", "tests"]
 
 [tool.coverage.report]
 exclude_lines = [
-  "no cov",
-  "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
+  "if __name__ == .__main__.:",
+  "no cov",
 ]
 
 [tool.deptry]
@@ -66,8 +66,8 @@ known_first_party = ["django_healthy"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "testproj.settings"
-pythonpath = [".", "src"]
 asyncio_default_fixture_loop_scope = "function"
+pythonpath = [".", "src"]
 
 [tool.hatch.build.targets.wheel]
 sources = ["src"]
@@ -88,38 +88,38 @@ dependencies = [
 ]
 
 [tool.hatch.envs.default.scripts]
-test = "pytest {args:tests}"
-test-cov = "coverage run -m pytest {args:tests}"
+cov = [
+  "cov-report",
+  "test-cov",
+]
 cov-report = [
   "- coverage combine",
   "coverage report",
 ]
-cov = [
-  "test-cov",
-  "cov-report",
-]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
 
 [[tool.hatch.envs.all.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+python = ["3.10", "3.11", "3.12", "3.13", "3.8", "3.9"]
 
 [tool.hatch.envs.style]
-detached = true
 dependencies = ["deptry", "pre-commit"]
+detached = true
 
 [tool.hatch.envs.style.scripts]
-deps = "deptry ."
-lint = "pre-commit run -a -v"
-update = "pre-commit autoupdate"
 check = [
   "deps",
   "lint",
 ]
+deps = "deptry ."
+lint = "pre-commit run -a -v"
+update = "pre-commit autoupdate"
 
 [tool.hatch.envs.tests.overrides]
 matrix.django.dependencies = [
-    { value = "django>=4.2,<5.0", if = ["4.2"] },
-    { value = "django>=5.0,<5.1", if = ["5.0"] },
-    { value = "django>=5.1,<5.2", if = ["5.1"] },
+  { value = "django>=4.2,<5.0", if = ["4.2"] },
+  { value = "django>=5.0,<5.1", if = ["5.0"] },
+  { value = "django>=5.1,<5.2", if = ["5.1"] },
 ]
 
 [[tool.hatch.envs.tests.matrix]]
