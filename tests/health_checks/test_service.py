@@ -15,7 +15,7 @@ class TestHealthCheckService:
 
         got = await service.check_health()
 
-        assert got.status == HealthStatus.HEALTHY
+        assert got.status == HealthStatus.PASS
         assert set(got.entries.keys()) == set(settings.HEALTH_CHECKS.keys())
 
     async def test_with_custom_handler(self):
@@ -31,7 +31,7 @@ class TestHealthCheckService:
 
         got = await service.check_health()
 
-        assert got.status == HealthStatus.HEALTHY
+        assert got.status == HealthStatus.PASS
         assert set(got.entries.keys()) == {"test"}
 
     async def test_with_unhealthy_service(self):
@@ -50,7 +50,7 @@ class TestHealthCheckService:
 
         got = await service.check_health()
 
-        assert got.status == HealthStatus.UNHEALTHY
+        assert got.status == HealthStatus.FAIL
         assert set(got.entries.keys()) == {"test"}
 
     async def test_with_multiple_service_status_gets_worst_case(self):
@@ -75,5 +75,5 @@ class TestHealthCheckService:
 
         got = await service.check_health()
 
-        assert got.status == HealthStatus.UNHEALTHY
+        assert got.status == HealthStatus.FAIL
         assert set(got.entries.keys()) == {"healthy", "unhealthy"}

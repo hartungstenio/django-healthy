@@ -5,7 +5,7 @@ class TestHealthCheckResult:
     def test_healthy_defaults(self):
         got = HealthCheckResult.healthy()
 
-        assert got.status == HealthStatus.HEALTHY
+        assert got.status == HealthStatus.PASS
         assert got.description is None
         assert got.exception is None
         assert got.data == {}
@@ -21,7 +21,7 @@ class TestHealthCheckResult:
             data=given_data,
         )
 
-        assert got.status == HealthStatus.HEALTHY
+        assert got.status == HealthStatus.PASS
         assert got.description == given_description
         assert got.exception == given_exception
         assert got.data == given_data
@@ -29,7 +29,7 @@ class TestHealthCheckResult:
     def test_degraded_defaults(self):
         got = HealthCheckResult.degraded()
 
-        assert got.status == HealthStatus.DEGRADED
+        assert got.status == HealthStatus.WARN
         assert got.description is None
         assert got.exception is None
         assert got.data == {}
@@ -45,7 +45,7 @@ class TestHealthCheckResult:
             data=given_data,
         )
 
-        assert got.status == HealthStatus.DEGRADED
+        assert got.status == HealthStatus.WARN
         assert got.description == given_description
         assert got.exception == given_exception
         assert got.data == given_data
@@ -53,7 +53,7 @@ class TestHealthCheckResult:
     def test_unhealthy_defaults(self):
         got = HealthCheckResult.unhealthy()
 
-        assert got.status == HealthStatus.UNHEALTHY
+        assert got.status == HealthStatus.FAIL
         assert got.description is None
         assert got.exception is None
         assert got.data == {}
@@ -69,7 +69,7 @@ class TestHealthCheckResult:
             data=given_data,
         )
 
-        assert got.status == HealthStatus.UNHEALTHY
+        assert got.status == HealthStatus.FAIL
         assert got.description == given_description
         assert got.exception == given_exception
         assert got.data == given_data

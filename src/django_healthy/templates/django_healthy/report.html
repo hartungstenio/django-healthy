@@ -14,7 +14,7 @@
                 {% for system, reported in report.entries.items %}
                 <tr>
                     <td>{{ system }}</td>
-                    <td>{{ reported.status.name }}</td>
+                    <td>{{ reported.status }}</td>
                     <td>{{ reported.duration.total_seconds }}</td>
                 </tr>
                 {% endfor %}
