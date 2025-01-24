@@ -5,6 +5,6 @@ from .views import HealthView, LivenessView
 app_name = "django_healthy"
 
 urlpatterns = [
-    path("ping/", LivenessView.as_view(), name="ping"),
-    path("health/", HealthView.as_view(), name="health"),
+    path("", HealthView.as_view(), name="health"),
+    path("alive/", LivenessView.as_view(), name="ping"),
 ]
