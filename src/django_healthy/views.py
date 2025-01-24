@@ -6,7 +6,7 @@ from django.http import HttpRequest, HttpResponse
 from django.template.response import TemplateResponse
 from django.views import View
 
-from .health_checks import HealthReport, health_check_service
+from .health_checks import HealthReport, HealthStatus, health_check_service
 
 
 class LivenessView(View):
@@ -18,7 +18,7 @@ class LivenessView(View):
     ]
 
     async def get(self, request: HttpRequest) -> HttpResponse:  # noqa: ARG002
-        return HttpResponse("Pong")
+        return HttpResponse(HealthStatus.PASS, content_type="text/plain")
 
 
 class HealthView(View):
