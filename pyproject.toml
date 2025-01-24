@@ -21,6 +21,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
   "Framework :: Django :: 4.2",
@@ -93,7 +94,7 @@ cov = [
 ]
 
 [[tool.hatch.envs.all.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
 [tool.hatch.envs.style]
 detached = true
@@ -120,8 +121,12 @@ django = ["4.2"]
 python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
 [[tool.hatch.envs.tests.matrix]]
-django = ["5.0", "5.1"]
+django = ["5.0"]
 python = ["3.10", "3.11", "3.12"]
+
+[[tool.hatch.envs.tests.matrix]]
+django = ["5.1"]
+python = ["3.10", "3.11", "3.12", "3.13"]
 
 [tool.hatch.envs.types]
 dependencies = [
