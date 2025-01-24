@@ -17,8 +17,8 @@ include = ["**/pyproject.toml"]
 keys = ["project"]
 
 [rule.formatting]
-reorder_keys = false
 reorder_arrays = false
+reorder_keys = false
 
 [[rule]]
 include = ["**/pyproject.toml"]
@@ -29,7 +29,7 @@ reorder_keys = false
 
 [[rule]]
 include = ["**/pyproject.toml"]
-keys = ["tool.hatch.envs.tests.matrix"]
+keys = ["tool.hatch.envs.*.scripts", "tool.hatch.envs.*.matrix"]
 
 [rule.formatting]
 reorder_arrays = false
